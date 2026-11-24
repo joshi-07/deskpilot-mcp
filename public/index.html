@@ -16,6 +16,13 @@
     <!-- Top Navigation Bar -->
     <header class="topbar">
       <div class="brand">
+        <button class="btn-icon" id="toggleLeftBtn" onclick="toggleSidebar('left')" title="Toggle Workflows Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
         <div class="brand-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -39,17 +46,38 @@
           </svg>
           <span>ElevenLabs Audio Enabled</span>
         </div>
-        <div class="pill pill-muted">
-          <span>AWS MicroVM Ready</span>
+        
+        <div class="topbar-buttons">
+          <button class="btn-topbar" onclick="clearChat()" title="Reset Conversation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Clear</span>
+          </button>
+          <button class="btn-topbar" onclick="exportLog()" title="Download MCP Session Audit">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Log</span>
+          </button>
+          <button class="btn-icon" id="toggleRightBtn" onclick="toggleSidebar('right')" title="Toggle MCP Inspector">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+            </svg>
+          </button>
         </div>
       </div>
     </header>
 
     <!-- Main Workspace Layout -->
-    <main class="workspace">
+    <main class="workspace" id="mainWorkspace">
       
       <!-- Left Sidebar: Everyday Actions & Capabilities -->
-      <aside class="sidebar-left">
+      <aside class="sidebar-left" id="sidebarLeft">
         <div class="sidebar-section">
           <div class="section-label">EVERYDAY WORKFLOWS</div>
           <div class="quick-actions">
@@ -96,13 +124,16 @@
         </div>
 
         <div class="sidebar-section">
-          <div class="section-label">REGISTERED MCP TOOLS</div>
+          <div class="section-label-row">
+            <span class="section-label">REGISTERED MCP TOOLS</span>
+            <span class="label-hint">Click tool to test</span>
+          </div>
           <div id="mcpToolsList" class="tools-pills">
-            <span class="tool-tag">calendar_triage</span>
-            <span class="tool-tag">smart_file_organizer</span>
-            <span class="tool-tag">expense_tracker</span>
-            <span class="tool-tag">eisenhower_prioritizer</span>
-            <span class="tool-tag">system_health</span>
+            <span class="tool-tag clickable" onclick="openToolTester('calendar_triage')">calendar_triage ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('smart_file_organizer')">smart_file_organizer ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('expense_tracker')">expense_tracker ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('eisenhower_prioritizer')">eisenhower_prioritizer ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('system_health')">system_health ⚡</span>
           </div>
         </div>
       </aside>
@@ -116,8 +147,8 @@
               <span class="time-stamp">Ready</span>
             </div>
             <div class="message-content">
-              <p>Welcome to <strong>DeskPilot MCP</strong>. I bridge advanced AI agents with your everyday local applications through the open <strong>Model Context Protocol</strong>.</p>
-              <p>Try one of the everyday workflows on the left or type any request below. Every action executes through controlled, audited MCP tool definitions.</p>
+              <p>Welcome to <strong>DeskPilot MCP</strong> — your personal everyday operations copilot powered by the open <strong>Model Context Protocol</strong>.</p>
+              <p>Ask a daily question or select a workflow on the left. Watch real-time execution steps, human-in-the-loop safety gates, and raw JSON-RPC inspector payloads in the panels.</p>
             </div>
           </div>
         </div>
@@ -151,7 +182,7 @@
       </section>
 
       <!-- Right Panel: Live MCP Inspector & JSON-RPC Telemetry -->
-      <aside class="sidebar-right">
+      <aside class="sidebar-right" id="sidebarRight">
         <div class="panel-header">
           <div class="panel-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -174,8 +205,32 @@
           </div>
         </div>
 
+        <!-- Live Host Metrics Widget -->
+        <div class="system-stats-card">
+          <div class="stats-header">
+            <span class="stats-title">LIVE WORKSTATION TELEMETRY</span>
+            <span id="sysUptime" class="stats-pill">Uptime: --</span>
+          </div>
+          <div class="metric-bar-group">
+            <div class="metric-bar-label">
+              <span>RAM Utilization</span>
+              <span id="sysRamPercent">--%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="sysRamFill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="stats-footer">
+            <span id="sysPlatform">Platform: --</span>
+            <span id="sysCpus">CPUs: --</span>
+          </div>
+        </div>
+
         <div class="panel-section">
-          <span class="section-label">PAYLOAD & TOOL RETURN (RAW JSON)</span>
+          <div class="section-label-row">
+            <span class="section-label">PAYLOAD & TOOL RETURN (RAW JSON)</span>
+            <button class="btn-copy" onclick="copyJsonPayload()">Copy</button>
+          </div>
           <pre id="jsonPayload" class="code-view">// Awaiting MCP tool execution...</pre>
         </div>
 
@@ -189,6 +244,28 @@
       </aside>
 
     </main>
+  </div>
+
+  <!-- Interactive MCP Tool Tester Modal -->
+  <div id="toolTesterModal" class="modal-overlay hidden" onclick="closeToolTester(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="badge-mcp">MCP TOOL TESTER</span>
+          <h3 id="testerToolName">Tool Name</h3>
+        </div>
+        <button class="btn-close" onclick="closeToolTester()">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="input-label">Arguments (JSON format):</label>
+        <textarea id="testerArgs" class="modal-textarea" rows="5"></textarea>
+        <div class="modal-actions">
+          <button class="btn-run-tool" onclick="executeTesterTool()">Execute Tool (JSON-RPC)</button>
+        </div>
+        <label class="input-label" style="margin-top:12px;">Result Output:</label>
+        <pre id="testerResult" class="code-view-modal">// Click execute to see tool response...</pre>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>
