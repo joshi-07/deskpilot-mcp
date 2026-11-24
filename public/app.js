@@ -178,7 +178,9 @@ function toggleVoiceSpeech() {
 }
 
 function scrollToBottom() {
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  requestAnimationFrame(() => {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  });
 }
 
 function escapeHtml(str) {
