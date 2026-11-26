@@ -1,0 +1,23 @@
+{
+  "name": "deskpilot-mcp",
+  "version": "1.0.0",
+  "description": "An everyday personal operations co-pilot powered by Model Context Protocol (MCP), ElevenLabs Voice, and safe local tool execution.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "mcp:stdio": "node src/mcp/stdio-server.js",
+    "dev": "node src/server.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "elevenlabs",
+    "hackathon",
+    "whackiest-2026",
+    "productivity"
+  ],
+  "author": "wHACKiest Team",
+  "license": "MIT"
+}

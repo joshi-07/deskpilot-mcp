@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeskPilot MCP | Everyday Personal Operations Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <button class="btn-icon" id="toggleLeftBtn" onclick="toggleSidebar('left')" title="Toggle Workflows Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-meta">
+          <span class="brand-title">DeskPilot <span class="badge-mcp">MCP</span></span>
+          <span class="brand-subtitle">wHACKiest 2026 • Track 01: Make MCP Matter</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="pill pill-success">
+          <span class="status-dot"></span>
+          <span>MCP Server: Online</span>
+        </div>
+        <div class="pill pill-sponsor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span>ElevenLabs Audio Enabled</span>
+        </div>
+        
+        <div class="topbar-buttons">
+          <button class="btn-topbar" onclick="clearChat()" title="Reset Conversation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Clear</span>
+          </button>
+          <button class="btn-topbar" onclick="exportLog()" title="Download MCP Session Audit">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Log</span>
+          </button>
+          <button class="btn-icon" id="toggleRightBtn" onclick="toggleSidebar('right')" title="Toggle MCP Inspector">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <main class="workspace" id="mainWorkspace">
+      
+      <!-- Left Sidebar: Everyday Actions & Capabilities -->
+      <aside class="sidebar-left" id="sidebarLeft">
+        <div class="sidebar-section">
+          <div class="section-label">EVERYDAY WORKFLOWS</div>
+          <div class="quick-actions">
+            <button class="action-card" onclick="runPrompt('Triage my morning schedule and find focus blocks')">
+              <div class="card-icon">📅</div>
+              <div class="card-info">
+                <span class="card-title">Morning Schedule Triage</span>
+                <span class="card-desc">Detect meeting conflicts & focus time</span>
+              </div>
+            </button>
+
+            <button class="action-card" onclick="runPrompt('Organize my messy Downloads folder with a safe dry-run')">
+              <div class="card-icon">📁</div>
+              <div class="card-info">
+                <span class="card-title">Smart Downloads Audit</span>
+                <span class="card-desc">Categorize files with dry-run safety</span>
+              </div>
+            </button>
+
+            <button class="action-card" onclick="runPrompt('Log my grocery expense of 480 rupees from Zepto')">
+              <div class="card-icon">💳</div>
+              <div class="card-info">
+                <span class="card-title">Expense & Budget Logging</span>
+                <span class="card-desc">Instant ledger record & threshold check</span>
+              </div>
+            </button>
+
+            <button class="action-card" onclick="runPrompt('Prioritize my daily tasks using the Eisenhower matrix')">
+              <div class="card-icon">🎯</div>
+              <div class="card-info">
+                <span class="card-title">Eisenhower Task Matrix</span>
+                <span class="card-desc">P1 to P4 prioritization analysis</span>
+              </div>
+            </button>
+
+            <button class="action-card" onclick="runPrompt('Run a health check on my system memory and load')">
+              <div class="card-icon">💻</div>
+              <div class="card-info">
+                <span class="card-title">Local System Telemetry</span>
+                <span class="card-desc">Memory, CPU & security boundaries</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="section-label-row">
+            <span class="section-label">REGISTERED MCP TOOLS</span>
+            <span class="label-hint">Click tool to test</span>
+          </div>
+          <div id="mcpToolsList" class="tools-pills">
+            <span class="tool-tag clickable" onclick="openToolTester('calendar_triage')">calendar_triage ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('smart_file_organizer')">smart_file_organizer ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('expense_tracker')">expense_tracker ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('eisenhower_prioritizer')">eisenhower_prioritizer ⚡</span>
+            <span class="tool-tag clickable" onclick="openToolTester('system_health')">system_health ⚡</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center: Conversational Agent Stream -->
+      <section class="chat-viewport">
+        <div id="messagesContainer" class="messages-container">
+          <div class="message assistant-message">
+            <div class="message-header">
+              <span class="sender-tag">DeskPilot Agent</span>
+              <span class="time-stamp">Ready</span>
+            </div>
+            <div class="message-content">
+              <p>Welcome to <strong>DeskPilot MCP</strong> — your personal everyday operations copilot powered by the open <strong>Model Context Protocol</strong>.</p>
+              <p>Ask a daily question or select a workflow on the left. Watch real-time execution steps, human-in-the-loop safety gates, and raw JSON-RPC inspector payloads in the panels.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="input-container">
+          <form id="chatForm" onsubmit="handleSend(event)" class="chat-form">
+            <input 
+              type="text" 
+              id="userInput" 
+              placeholder="Ask DeskPilot (e.g. 'Triage my morning schedule', 'Log ₹350 for lunch')..." 
+              autocomplete="off" 
+            />
+            <button type="button" class="btn-voice" id="voiceBtn" onclick="toggleVoiceSpeech()" title="ElevenLabs Voice Speech Synthesis">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+            <button type="submit" class="btn-send" id="sendBtn">
+              <span>Send</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right Panel: Live MCP Inspector & JSON-RPC Telemetry -->
+      <aside class="sidebar-right" id="sidebarRight">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>MCP Protocol Inspector</span>
+          </div>
+          <span class="badge-subtle">JSON-RPC 2.0</span>
+        </div>
+
+        <div class="inspector-card">
+          <div class="card-metric">
+            <span class="metric-label">CURRENT ACTIVE TOOL</span>
+            <span id="activeToolName" class="metric-value">None</span>
+          </div>
+          <div class="card-metric">
+            <span class="metric-label">SECURITY VERIFICATION</span>
+            <span id="securityStatus" class="metric-value text-success">Boundary Sandboxed</span>
+          </div>
+        </div>
+
+        <!-- Live Host Metrics Widget -->
+        <div class="system-stats-card">
+          <div class="stats-header">
+            <span class="stats-title">LIVE WORKSTATION TELEMETRY</span>
+            <span id="sysUptime" class="stats-pill">Uptime: --</span>
+          </div>
+          <div class="metric-bar-group">
+            <div class="metric-bar-label">
+              <span>RAM Utilization</span>
+              <span id="sysRamPercent">--%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="sysRamFill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="stats-footer">
+            <span id="sysPlatform">Platform: --</span>
+            <span id="sysCpus">CPUs: --</span>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="section-label-row">
+            <span class="section-label">PAYLOAD & TOOL RETURN (RAW JSON)</span>
+            <button class="btn-copy" onclick="copyJsonPayload()">Copy</button>
+          </div>
+          <pre id="jsonPayload" class="code-view">// Awaiting MCP tool execution...</pre>
+        </div>
+
+        <div class="sponsor-callout">
+          <div class="sponsor-title">
+            <span>🎙️ ElevenLabs Voice Synthesis</span>
+            <span class="badge-mini">Sponsor Track</span>
+          </div>
+          <p class="sponsor-desc">Each MCP agent response is paired with streaming neural speech output for seamless voice interaction.</p>
+        </div>
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- Interactive MCP Tool Tester Modal -->
+  <div id="toolTesterModal" class="modal-overlay hidden" onclick="closeToolTester(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="badge-mcp">MCP TOOL TESTER</span>
+          <h3 id="testerToolName">Tool Name</h3>
+        </div>
+        <button class="btn-close" onclick="closeToolTester()">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="input-label">Arguments (JSON format):</label>
+        <textarea id="testerArgs" class="modal-textarea" rows="5"></textarea>
+        <div class="modal-actions">
+          <button class="btn-run-tool" onclick="executeTesterTool()">Execute Tool (JSON-RPC)</button>
+        </div>
+        <label class="input-label" style="margin-top:12px;">Result Output:</label>
+        <pre id="testerResult" class="code-view-modal">// Click execute to see tool response...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
